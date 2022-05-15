@@ -6,8 +6,7 @@ var factory = new ConnectionFactory() { HostName = "localhost" };
 using var connection = factory.CreateConnection();
 using var channel = connection.CreateModel();
 
-channel.QueueDeclare(queue: "CounterQueue", durable: false, exclusive: false, autoDelete: false, arguments: null);
-channel.QueueDeclare(queue: "CharsQueue", durable: false, exclusive: false, autoDelete: false, arguments: null);
+channel.QueueDeclare(queue: "EntitiesQueue", durable: false, exclusive: false, autoDelete: false, arguments: null);
 
 Console.WriteLine("Subscriber Waiting for messages.");
 Console.WriteLine("================================");
@@ -19,8 +18,8 @@ consumer.Received += (model, ea) =>
     var message = Encoding.UTF8.GetString(body);
     Console.WriteLine($"Subscriber Received '{message}'");
 };
-channel.BasicConsume(queue: "CounterQueue", autoAck: true, consumer: consumer);
-channel.BasicConsume(queue: "CharsQueue", autoAck: true, consumer: consumer);
+
+channel.BasicConsume(queue: "EntitiesQueue", autoAck: true, consumer: consumer);
 
 Console.WriteLine("Press [enter] to exit.");
 Console.ReadLine();
