@@ -1,19 +1,20 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using MessageBroker.Core;
+using Microsoft.Extensions.Hosting;
 
 namespace Subscriber;
 
 internal class Worker : BackgroundService
 {
-    private readonly IPerson person;
+    private readonly ISubscriber _subscriber;
 
-    public Worker(IPerson person)
+    public Worker(ISubscriber subscriber)
     {
-        this.person = person;
+        _subscriber = subscriber;
     }
-    protected override Task ExecuteAsync(CancellationToken stoppingToken)
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        var a = person.Name;
-        return Task.CompletedTask;
+        Console.WriteLine("Waiting for messages...");
+        await _subscriber.SubscribeAsync("topic1", Console.WriteLine);
     }
 }
 

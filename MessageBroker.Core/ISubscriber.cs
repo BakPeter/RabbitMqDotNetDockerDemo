@@ -2,5 +2,5 @@
 
 public interface ISubscriber
 {
-    void Subscribe(string topic, Action<string> callBack);
+    Task SubscribeAsync(string topic, Action<string> callBack);
 }

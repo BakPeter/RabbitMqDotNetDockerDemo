@@ -6,7 +6,7 @@ namespace MessageBroker.Infrastructure.RabbitMq.Builder
     internal class RabbitMqChannelBuilder: IDisposable
     {
         private readonly RabbitMqConfiguration _configuration;
-        private IConnection _connection;
+        private IConnection? _connection;
 
         public RabbitMqChannelBuilder(RabbitMqConfiguration configuration)
         {
@@ -22,7 +22,7 @@ namespace MessageBroker.Infrastructure.RabbitMq.Builder
 
         public void Dispose()
         {
-            _connection.Dispose();
+            _connection?.Dispose();
         }
     }
 }
