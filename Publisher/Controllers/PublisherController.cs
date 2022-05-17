@@ -1,34 +1,20 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MessageBroker.Core;
+using Microsoft.AspNetCore.Mvc;
 
-namespace Peblisher.Controllers
+namespace Publisher.Controllers
 {
     [ApiController]
     [Route("[controller]")]
     public class PublisherController : Controller
     {
-        [HttpPost]
-        public Task<bool> Publish(string topic, string message)
+        private readonly IPublisher _publisher;
+
+        public PublisherController(IPublisher publisher)
         {
-            return Task.FromResult(true);
+            _publisher = publisher;
         }
+
+        [HttpPost]
+        public async Task Publish(string topic, string message) => await _publisher.PublishAsync(topic, message);
     }
 }
-
-
-//using RabbitMQ.Client;
-//using System.Text;
-
-//var factory = new ConnectionFactory() { HostName = "localhost" };
-//using var connection = factory.CreateConnection();
-//using var channel = connection.CreateModel();
-
-//channel.QueueDeclare(queue: "EntitiesQueue", durable: false, exclusive: false, autoDelete: false, arguments: null);
-
-//string message = "{param1:value1, param2:value2}";
-//var body = Encoding.UTF8.GetBytes(message);
-
-//channel.BasicPublish(exchange: "", routingKey: "EntitiesQueue", basicProperties: null, body: body);
-//Console.WriteLine($"Chars Publisher Sent '{message}'");
-
-//Console.WriteLine(" Press [enter] to exit.");
-//Console.ReadLine();

@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.Hosting;
 
+namespace Subscriber;
+
 internal class Worker : BackgroundService
 {
     private readonly IPerson person;
@@ -14,7 +16,6 @@ internal class Worker : BackgroundService
         return Task.CompletedTask;
     }
 }
-
 
 
 //var factory = new ConnectionFactory() { HostName = "localhost" };

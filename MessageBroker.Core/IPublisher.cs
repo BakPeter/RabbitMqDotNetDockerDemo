@@ -2,5 +2,5 @@
 
 public interface IPublisher
 {
-    void Publish(string topic, string message);
+    Task PublishAsync(string topic, string message);
 }

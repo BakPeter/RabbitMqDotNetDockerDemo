@@ -1,9 +1,12 @@
+using MessageBroker.Infrastructure;
+using MessageBroker.Infrastructure.RabbitMq.Builder.Configurations;
+
 var builder = WebApplication.CreateBuilder(args);
+var settings = builder.Configuration.GetSection("Settings").Get<RabbitMqConfiguration>();
 
-// Add services to the container.
-
+builder.Services.AddMessageBrokerInfrastructureService(settings);
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

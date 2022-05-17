@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-
+using Subscriber;
 
 using IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((_, services) =>
@@ -11,13 +11,16 @@ using IHost host = Host.CreateDefaultBuilder(args)
 
 await host.RunAsync();
 
-//sample
-public interface IPerson
+namespace Subscriber
 {
-    string Name { get; }
-}
+    //sample
+    public interface IPerson
+    {
+        string Name { get; }
+    }
 
-public class Person : IPerson
-{
-    public string Name => "abc";
+    public class Person : IPerson
+    {
+        public string Name => "abc";
+    }
 }
