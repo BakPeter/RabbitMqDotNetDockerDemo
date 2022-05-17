@@ -1,17 +1,25 @@
-﻿using RabbitMQ.Client;
-using System.Text;
+var builder = WebApplication.CreateBuilder(args);
 
-var factory = new ConnectionFactory() { HostName = "localhost" };
-using var connection = factory.CreateConnection();
-using var channel = connection.CreateModel();
+// Add services to the container.
 
-channel.QueueDeclare(queue: "EntitiesQueue", durable: false, exclusive: false, autoDelete: false, arguments: null);
+builder.Services.AddControllers();
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
-string message = "{param1:value1, param2:value2}";
-var body = Encoding.UTF8.GetBytes(message);
+var app = builder.Build();
 
-channel.BasicPublish(exchange: "", routingKey: "EntitiesQueue", basicProperties: null, body: body);
-Console.WriteLine($"Chars Publisher Sent '{message}'");
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
-Console.WriteLine(" Press [enter] to exit.");
-Console.ReadLine();
+app.UseHttpsRedirection();
+
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.Run();

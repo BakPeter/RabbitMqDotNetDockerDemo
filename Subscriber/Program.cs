@@ -1,25 +1,23 @@
-﻿using RabbitMQ.Client;
-using RabbitMQ.Client.Events;
-using System.Text;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
-var factory = new ConnectionFactory() { HostName = "localhost" };
-using var connection = factory.CreateConnection();
-using var channel = connection.CreateModel();
 
-channel.QueueDeclare(queue: "EntitiesQueue", durable: false, exclusive: false, autoDelete: false, arguments: null);
+using IHost host = Host.CreateDefaultBuilder(args)
+    .ConfigureServices((_, services) =>
+    {
+        services.AddTransient<IPerson, Person>();
+        services.AddHostedService<Worker>();
+    }).Build();
 
-Console.WriteLine("Subscriber Waiting for messages.");
-Console.WriteLine("================================");
+await host.RunAsync();
 
-var consumer = new EventingBasicConsumer(channel);
-consumer.Received += (model, ea) =>
+//sample
+public interface IPerson
 {
-    var body = ea.Body.ToArray();
-    var message = Encoding.UTF8.GetString(body);
-    Console.WriteLine($"Subscriber Received '{message}'");
-};
+    string Name { get; }
+}
 
-channel.BasicConsume(queue: "EntitiesQueue", autoAck: true, consumer: consumer);
-
-Console.WriteLine("Press [enter] to exit.");
-Console.ReadLine();
+public class Person : IPerson
+{
+    public string Name => "abc";
+}
