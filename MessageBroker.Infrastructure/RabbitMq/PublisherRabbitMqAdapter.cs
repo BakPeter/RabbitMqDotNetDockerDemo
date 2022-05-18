@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Text;
 using MessageBroker.Core.Models;
 using MessageBroker.Infrastructure.Interfaces;
 using MessageBroker.Infrastructure.RabbitMq.Builder;
@@ -9,18 +10,21 @@ namespace MessageBroker.Infrastructure.RabbitMq;
 
 internal class PublisherRabbitMqAdapter : IPublisherAdapter, IDisposable
 {
-    private readonly IModel _channel;
+    private IModel? _channel;
+    private readonly RabbitMqChannelBuilder _rabbitMqChannelBuilder;
 
     public PublisherRabbitMqAdapter(
         RabbitMqChannelBuilder rabbitMqChannelBuilder)
     {
-        _channel = rabbitMqChannelBuilder.Build();
+        _rabbitMqChannelBuilder = rabbitMqChannelBuilder;
     }
 
     public MessageBrokerResultModel Publish(string topic, string message)
     {
         try
         {
+            _channel = _rabbitMqChannelBuilder.Build();
+
             _channel.QueueDeclare(queue: topic, durable: false, exclusive: false, autoDelete: false, arguments: null);
 
             var body = Encoding.UTF8.GetBytes(message);
@@ -38,6 +42,6 @@ internal class PublisherRabbitMqAdapter : IPublisherAdapter, IDisposable
 
     public void Dispose()
     {
-        _channel.Dispose();
+        _channel?.Dispose();
     }
 }

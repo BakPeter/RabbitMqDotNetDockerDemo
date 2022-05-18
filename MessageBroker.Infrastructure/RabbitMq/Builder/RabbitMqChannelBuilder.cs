@@ -23,6 +23,6 @@ namespace MessageBroker.Infrastructure.RabbitMq.Builder
         public void Dispose()
         {
             _connection?.Dispose();
-        }
+        } 
     }
 }

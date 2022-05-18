@@ -16,8 +16,11 @@ internal class Worker : BackgroundService
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {
         Console.WriteLine("Waiting for messages...");
-        _subscriber.Subscribe("topic1", (msg) => 
-                              new MessageBrokerResultModel(Success: true, Message: msg), stoppingToken);
+        _subscriber.Subscribe("topic1", (msg) =>
+        {
+            Console.WriteLine(msg);
+            return new MessageBrokerResultModel(Success: true, Message: msg);
+        }, stoppingToken);
         return Task.CompletedTask;
     }
 }
