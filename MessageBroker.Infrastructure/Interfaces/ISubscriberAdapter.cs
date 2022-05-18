@@ -2,5 +2,5 @@
 
 internal interface ISubscriberAdapter
 {
-    Task SubscribeAsync(string topic, Action<string> callBack);
+    void Subscribe(string topic, Action<string>? consumeMessageHandler, CancellationToken cancellationToken);
 }

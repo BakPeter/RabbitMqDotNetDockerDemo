@@ -1,6 +1,8 @@
-﻿namespace MessageBroker.Core;
+﻿using MessageBroker.Core.Models;
+
+namespace MessageBroker.Core;
 
 public interface ISubscriber
 {
-    Task SubscribeAsync(string topic, Action<string> callBack);
+    void Subscribe(string topic, Func<string, MessageBrokerResultModel> callBack, CancellationToken cancellationToken);
 }

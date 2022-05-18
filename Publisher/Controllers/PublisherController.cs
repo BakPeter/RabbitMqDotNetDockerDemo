@@ -1,4 +1,5 @@
 ﻿using MessageBroker.Core;
+using MessageBroker.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Publisher.Controllers
@@ -15,6 +16,6 @@ namespace Publisher.Controllers
         }
 
         [HttpPost]
-        public async Task Publish(string topic, string message) => await _publisher.PublishAsync(topic, message);
+        public MessageBrokerResultModel Publish(string topic, string message) => _publisher.Publish(topic, message);
     }
 }

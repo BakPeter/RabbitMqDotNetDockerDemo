@@ -1,6 +1,8 @@
-﻿namespace MessageBroker.Infrastructure.Interfaces;
+﻿using MessageBroker.Core.Models;
+
+namespace MessageBroker.Infrastructure.Interfaces;
 
 internal interface IPublisherAdapter
 {
-    Task PublishAsync(string topic, string message);
+    MessageBrokerResultModel Publish(string topic, string message);
 }

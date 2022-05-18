@@ -1,6 +1,8 @@
-﻿namespace MessageBroker.Core;
+﻿using MessageBroker.Core.Models;
+
+namespace MessageBroker.Core;
 
 public interface IPublisher
 {
-    Task PublishAsync(string topic, string message);
+    MessageBrokerResultModel Publish(string topic, string message);
 }

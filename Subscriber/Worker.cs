@@ -1,4 +1,5 @@
 ﻿using MessageBroker.Core;
+using MessageBroker.Core.Models;
 using Microsoft.Extensions.Hosting;
 
 namespace Subscriber;
@@ -11,32 +12,12 @@ internal class Worker : BackgroundService
     {
         _subscriber = subscriber;
     }
-    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+
+    protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {
         Console.WriteLine("Waiting for messages...");
-        await _subscriber.SubscribeAsync("topic1", Console.WriteLine);
+        _subscriber.Subscribe("topic1", (msg) => 
+                              new MessageBrokerResultModel(Success: true, Message: msg), stoppingToken);
+        return Task.CompletedTask;
     }
 }
-
-
-//var factory = new ConnectionFactory() { HostName = "localhost" };
-//using var connection = factory.CreateConnection();
-//using var channel = connection.CreateModel();
-
-//channel.QueueDeclare(queue: "EntitiesQueue", durable: false, exclusive: false, autoDelete: false, arguments: null);
-
-//Console.WriteLine("Subscriber Waiting for messages.");
-//Console.WriteLine("================================");
-
-//var consumer = new EventingBasicConsumer(channel);
-//consumer.Received += (model, ea) =>
-//{
-//    var body = ea.Body.ToArray();
-//    var message = Encoding.UTF8.GetString(body);
-//    Console.WriteLine($"Subscriber Received '{message}'");
-//};
-
-//channel.BasicConsume(queue: "EntitiesQueue", autoAck: true, consumer: consumer,);
-
-//Console.WriteLine("Press [enter] to exit.");
-//Console.ReadLine();
