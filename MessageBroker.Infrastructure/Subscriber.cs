@@ -30,7 +30,8 @@ internal class Subscriber : ISubscriber
         }
         catch (Exception e)
         {
-            _logger.LogError(e, $"Subscriber.Subscribe failed: {e.Message}");
+            _logger.LogError(e, "Subscriber.Subscribe failed: {errorMessage}", e.Message);
+            throw;
         }
     }
 }
